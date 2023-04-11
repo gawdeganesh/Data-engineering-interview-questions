@@ -650,6 +650,30 @@ Indexing can increase disk usage: Indexes are stored separately from the table d
 
 Indexing can cause fragmentation: As records are added, modified, and deleted in a table, the data in the table and the associated index can become fragmented. This can slow down read and write operations, as the database system needs to search through a larger number of data blocks to find the relevant records.
 
+In database management systems, there are several types of indexes, each with its own benefits and trade-offs. The most commonly used types of indexes are:
+
+Clustered Index: A clustered index is an index in which the data in the table is physically sorted on the basis of the indexed column. It determines the order in which the rows of a table are stored on disk. A table can have only one clustered index. Clustered indexes are useful for tables that are frequently queried using range searches or for tables that are frequently updated in a sequential order.
+
+Non-Clustered Index: A non-clustered index is an index that is created on a separate structure from the data and is linked to the data using a pointer. Non-clustered indexes can be created on one or more columns of a table. Non-clustered indexes are useful for tables that are frequently queried for individual values or for tables that are frequently updated in a random order.
+
+Unique Index: A unique index is an index that ensures that the indexed column or columns contain only unique values. A table can have multiple unique indexes. Unique indexes are useful for tables that require data integrity and uniqueness of values in a column or set of columns.
+
+Bitmap Index: A bitmap index is a type of index that uses a bitmap to represent the presence or absence of a value in a column. Bitmap indexes are useful for columns that have a small number of distinct values and for tables with a large number of rows.
+
+Full-Text Index: A full-text index is an index that is used for searching text-based data such as documents or web pages. Full-text indexes are useful for tables that contain large amounts of textual data.
+
+When deciding which type of index to use, consider the following factors:
+
+Cardinality: The number of distinct values in a column or set of columns. If a column has high cardinality, a unique or non-clustered index might be more appropriate. If a column has low cardinality, a bitmap index might be more appropriate.
+
+Frequency of Querying: The frequency with which a table is queried for a particular column or set of columns. If a table is frequently queried for a range of values in a column or set of columns, a clustered index might be more appropriate. If a table is frequently queried for individual values in a column or set of columns, a non-clustered index might be more appropriate.
+
+Frequency of Updating: The frequency with which a table is updated. If a table is frequently updated, a non-clustered index might be more appropriate, as clustered indexes can slow down update operations.
+
+Data Size: The size of the data set. Full-text indexes might be more appropriate for tables that contain large amounts of textual data, while bitmap indexes might be more appropriate for tables with a large number of rows.
+
+Overall, the choice of index type depends on the specific requirements of the database and the queries that will be performed on it.
+
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is an Integrity Constrains?
