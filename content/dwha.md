@@ -821,17 +821,37 @@ Star schema: A single fact table with N number of DimensionSnowflake schema: Any
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are Data Marts?
-A data mart is a collection of tables focused on specific business group/department. It may have multi-dimensional or normalized. Data marts are usually built from a bigger data warehouse or from operational data.
+Data marts are smaller subsets of a larger data warehouse that are designed to serve the needs of specific business units or departments within an organization. They contain a subset of the data warehouse's data, typically focused on a particular subject area or business function, and are optimized for querying and reporting on that data.
+
+Unlike a full data warehouse, which can contain vast amounts of historical and transactional data, data marts are designed to be more agile and flexible, with a smaller and more focused set of data that can be quickly and easily analyzed by business users.
+
+Data marts can be built in different ways, such as by extracting data from the larger data warehouse, or by sourcing data directly from operational systems. They can also be designed using different data modeling approaches, such as dimensional modeling or relational modeling, depending on the specific requirements of the business users and the data being analyzed.
+
+Overall, data marts provide a way for organizations to provide more targeted and efficient access to data, enabling business users to make better and more informed decisions based on the specific data they need.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the Data Type of the Surrogate Key?
 There is no data type for a Surrogate Key. Requirement of a surrogate Key: UNIQUE Recommended data type of a Surrogate key is NUMERIC.
+A surrogate key is a unique identifier assigned to each record in a table to serve as the primary key. Surrogate keys are not derived from the data and have no meaning to the business or end users. Instead, they are system-generated keys used to uniquely identify records in a table.
+
+In a data warehouse, surrogate keys are commonly used to improve performance and simplify ETL processes. Since the data in a data warehouse is typically sourced from multiple systems with different data structures and keys, surrogate keys provide a consistent way to join data from different sources. Additionally, using surrogate keys can eliminate the need to use natural keys, which can be lengthy and complex, and may contain sensitive information.
+
+Surrogate keys also provide a way to handle changes to the source data without affecting the data warehouse. If a record in the source system is updated, a new record is typically inserted into the data warehouse with a new surrogate key, rather than updating the existing record. This maintains the integrity of the data in the data warehouse and ensures that historical data is not lost or overwritten.
+
+Overall, surrogate keys play an important role in the design and implementation of a data warehouse, providing a reliable and efficient way to manage and integrate data from multiple sources.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are Fact and Dimension and Measure?
-Fact is key performance indicator to analyze the business. Dimension is used to analyze the fact. Without dimension there is no meaning for fact.
+In a data warehouse, a fact is a measurable event that has occurred in the business, such as a sale, a customer interaction, or a shipment. A fact table contains the measurements or metrics associated with the event, such as quantity, amount, price, and cost. Each row in the fact table represents a specific event that has occurred in the business, and the values in the table correspond to the dimensions associated with that event.
+
+Dimensions provide context and additional information about the event captured in the fact table. Dimensions are typically descriptive attributes, such as time, geography, product, or customer, that provide additional information about the event. Dimension tables contain the attributes related to the dimension, and each row in the dimension table represents a unique value of that attribute.
+
+Measures are the numeric values in the fact table that represent the quantitative aspect of the event captured. Measures can be aggregated and analyzed to gain insights into the business operations. Examples of measures include sales revenue, cost of goods sold, and profit margin.
+
+Overall, facts, dimensions, and measures form the basis of a multidimensional data model, which is used to organize and analyze large volumes of data in a data warehouse. By separating the event data into facts and dimensions, and by aggregating the measures, analysts can quickly and easily analyze the data to gain insights into the business operations.
+
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
