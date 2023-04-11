@@ -340,7 +340,7 @@ Overall, a well-designed data warehouse architecture should provide a scalable, 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is an integrity constraints and what are different types of integrity constraints?
-ntegrity constraints are rules that are defined for a database schema to maintain the accuracy and consistency of the data stored in it. These constraints enforce the validity and correctness of the data in the database and prevent the entry of inconsistent or incorrect data.
+Integrity constraints are rules that are defined for a database schema to maintain the accuracy and consistency of the data stored in it. These constraints enforce the validity and correctness of the data in the database and prevent the entry of inconsistent or incorrect data.
 
 There are several types of integrity constraints, including:
 
@@ -524,12 +524,24 @@ A virtual or point-to-point data warehousing strategy means that end-users are a
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the difference between Metadata and Data Dictionary?
-Meta data is nothing but information about data. It contains the information (i.e. data) about the graphs, its related files, abinitio commands, server information etc i.e. all kinds of information about project related information etc.
+Metadata is data that describes other data. It provides information about the structure, content, and context of the data. Metadata can be used to help manage data, understand its meaning, and ensure its quality. Examples of metadata include data types, field lengths, table names, and relationships between tables.
+
+A Data Dictionary, on the other hand, is a specific type of metadata that provides a comprehensive description of the data elements used in a database or information system. It contains information about the data elements, including their names, definitions, attributes, data types, and relationships to other data elements. The Data Dictionary also includes information about the database structure, such as tables, views, indexes, and constraints.
+
+In other words, Metadata is a broader term that includes any information about the data, while a Data Dictionary is a specific type of metadata that provides a structured and standardized description of the data elements.
+
+To summarize, Metadata is any data that describes other data, while a Data Dictionary is a specific type of metadata that provides a detailed description of the data elements in a database or information system.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the difference between Mapping Parameter and Mapping Variable in Data Warehousing?
-Mapping Parameter defines the constant value and it cannot change the value throughout the session. Mapping Variables defines the value and it can be change throughout the session.
+In Data Warehousing, Mapping Parameter and Mapping Variable are both used in ETL (Extract, Transform, Load) processes to facilitate the data flow, but they serve different purposes.
+
+Mapping Parameter is a user-defined value that is used to pass a value from one mapping to another mapping, or from a workflow to a mapping. It is a constant value that does not change during the execution of the mapping or workflow. Mapping parameters are defined at the mapping level, and they can be used to parameterize a mapping, making it more flexible and reusable.
+
+Mapping Variable, on the other hand, is a user-defined value that can change during the execution of a mapping. Mapping variables are defined at the session level, and they can be used to store intermediate values during the data transformation process. Mapping variables can be set to a value at the start of a session, and their value can be updated by the mapping as it runs. Mapping variables are commonly used for complex data transformation logic, or for calculations that require multiple steps.
+
+To summarize, Mapping Parameter is a constant value that does not change during the execution of a mapping or workflow, while Mapping Variable is a value that can change during the execution of a mapping and is commonly used for complex data transformation logic.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -549,7 +561,18 @@ A Database contains one or more Rollback Segments to temporarily store "undo" in
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is a Table Space?
-A database is divided into Logical Storage Unit called table spaces. A table space is used to grouped related logical structures together.
+Different types of database objects can be stored in different tablespaces, depending on their size, access patterns, and performance requirements. For example, large tables or indexes might be stored in their own dedicated tablespaces to improve performance, while smaller tables or indexes might be grouped together in a shared tablespace.
+
+In summary, a tablespace is a logical storage unit in a database that is used to group related database objects together for more efficient storage and management of storage resources.
+Suppose you have a database for a retail store that sells products online. The database contains several tables, including a product table, a customer table, and an order table. In this case, you might create several tablespaces to store these tables:
+
+Product Tablespace - This tablespace would contain the product table, which stores information about all the products sold by the store, including their names, descriptions, prices, and inventory levels.
+
+Customer Tablespace - This tablespace would contain the customer table, which stores information about all the customers who have purchased products from the store, including their names, addresses, and contact information.
+
+Order Tablespace - This tablespace would contain the order table, which stores information about all the orders placed by customers, including the products ordered, the order date, and the shipping information.
+
+By grouping related tables together in separate tablespaces, you can better manage the physical storage of data in your database. For example, you can allocate more storage space to the Product Tablespace if you know that it will contain a large amount of data, or you can optimize performance by placing the most frequently accessed tables in a separate tablespace.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -564,12 +587,30 @@ A row is stored in a hash cluster based on the result of applying a hash functio
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## Describe referential Integrity?
-A rule defined on a column (or set of columns) in one table that allows the insert or update of a row only if the value for the column or set of columns (the dependent value) matches a value in a column of a related table (the referenced value). It also specifies the type of data manipulation allowed on referenced data and the action to be performed on dependent data as a result of any action on referenced data.
+Referential integrity is a fundamental concept in database management that ensures that relationships between tables are consistent and valid. It is the property of a database that ensures that the relationships between tables are enforced and maintained.
+
+Referential integrity is enforced through the use of foreign keys, which are used to establish a link between two tables. A foreign key is a field or set of fields in one table that refers to the primary key of another table. The primary key is a unique identifier for each record in the table, while the foreign key is used to associate a record in one table with a record in another table.
+
+When referential integrity is enforced, the database management system ensures that any changes made to the primary key value in the referenced table are automatically reflected in the foreign key values in the referring table. This ensures that the relationships between tables are always valid and consistent.
+
+For example, consider a database with two tables, a customer table and an order table. The customer table has a primary key called "CustomerID", while the order table has a foreign key called "CustomerID" that references the "CustomerID" field in the customer table. This means that each order must be associated with a valid customer ID in the customer table.
+
+If a user tries to insert an order with an invalid customer ID, the database management system will reject the insertion and generate an error message. Similarly, if a user tries to delete a customer record that has associated orders, the system will prevent the deletion and generate an error message.
+
+In summary, referential integrity is a set of rules that ensure that the relationships between tables in a database are consistent and valid. It is enforced through the use of foreign keys and helps maintain the accuracy and reliability of the data in the database.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
-## What is Schema?
-A schema is collection of database objects of a User.
+## What is Schema vs Database?
+A database is a collection of related data that is organized and stored in a specific way to allow for efficient data retrieval, manipulation, and management. It can be thought of as a container that holds all the data related to a specific application or set of applications.
+
+A schema, on the other hand, is a logical container for database objects such as tables, views, procedures, functions, etc. It defines the structure of the database, including the relationships between different objects, and provides a blueprint for creating, modifying, and querying the database.
+
+To put it simply, a database is a physical container for data, while a schema is a logical container for objects within that database.
+
+For example, consider a university database that contains data about students, courses, grades, and faculty. The database itself would be the container that holds all of this data, while the schema would be the logical structure that defines the relationships between the different objects within the database. The schema might include tables for students, courses, and faculty, as well as views and stored procedures for querying and updating the data in these tables.
+
+In summary, a database is a physical entity that stores data, while a schema is a logical entity that defines the structure and relationships of the objects within that database.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -589,7 +630,25 @@ An Extent is a specific number of contiguous data blocks, obtained in a single a
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is an Index?
-An Index is an optional structure associated with a table to have direct access to rows, which can be created to increase the performance of data retrieval. Index can be created on one or more columns of a table.
+n database management, an index is a data structure that is used to improve the speed of data retrieval operations on a table. An index is created on one or more columns of a table and contains a sorted list of values from those columns, along with a pointer to the corresponding row in the table.
+
+When a query is executed that involves the indexed column(s), the database engine uses the index to quickly locate the rows that match the query criteria, rather than scanning the entire table. This can significantly improve the performance of read operations on large tables.
+
+Indexes can be created on single or multiple columns of a table, depending on the query patterns and performance requirements. There are different types of indexes available in most database systems, including clustered, non-clustered, unique, and composite indexes.
+
+While indexes can improve the performance of read operations, they can also have some drawbacks, such as increased storage space and slower write operations. Therefore, it is important to carefully plan and design indexes based on the specific requirements and usage patterns of the database.
+
+In summary, an index is a data structure that improves the performance of data retrieval operations on a table by providing a sorted list of values and a pointer to the corresponding rows. They can significantly improve the read performance of large tables, but need to be designed and used carefully to avoid negative impacts on write performance and storage space.
+
+Indexing can have a negative impact on write operations for a few reasons:
+
+Overhead: When you create an index on a table, the database system needs to maintain the index data structure as you add, modify, or delete records in the table. This can add overhead to write operations, as the system needs to update the index as well as the table data.
+
+Indexing can slow down insert operations: When you insert a new record into a table with an index, the database system needs to update the index to include the new record. This can be a time-consuming operation, especially if the index is large, and can slow down insert operations.
+
+Indexing can increase disk usage: Indexes are stored separately from the table data, so adding indexes to a database can increase the amount of disk space required to store the data.
+
+Indexing can cause fragmentation: As records are added, modified, and deleted in a table, the data in the table and the associated index can become fragmented. This can slow down read and write operations, as the database system needs to search through a larger number of data blocks to find the relevant records.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
