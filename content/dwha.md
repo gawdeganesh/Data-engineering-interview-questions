@@ -882,17 +882,49 @@ Data Mining is used for the estimation of future. For example, if we take a comp
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the difference between View and Materialized View?
-View - store the SQL statement in the database and let you use it as a table. Every time you access the view, the SQL statement executes. Materialized view - stores the results of the SQL in table form in the database. SQL statement only executes once and after that every time you run the query, the stored result set is used. Pros include quick query results.
+The key difference between a view and a materialized view is that a view is a virtual table that needs to be recalculated every time it is queried, while a materialized view is a physical table that is pre-calculated and stored in the database. This means that querying a materialized view can be much faster than querying a regular view, especially if the query involves complex calculations or joins.
+
+However, since a materialized view contains data that is derived from one or more underlying tables, it needs to be refreshed periodically to ensure that the data is up-to-date. Refreshing a materialized view can be an expensive operation, especially if the underlying data changes frequently.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the main difference between Inmon and Kimball Philosophies of Data Warehousing?
-Both differed in the concept of building the data warehouse.According to Kimball, Kimball views data warehousing as a constituency of data marts. Data marts are focused on delivering business objectives for departments in the organization. And the data warehouse is a conformed dimension of the data marts. Hence, a unified view of the enterprise can be obtained from the dimension modeling on a local departmental level.Inmon beliefs in creating a data warehouse on a subject-by-subject area basis. Hence, the development of the data warehouse can start with data from the online store. Other subject areas can be added to the data warehouse as their needs arise. Point-of-sale (POS) data can be added later if management decides it is necessary.
+The Inmon and Kimball philosophies of data warehousing are two different approaches to designing and building a data warehouse.
+
+The Inmon approach, also known as the top-down approach, is a more traditional approach that focuses on building a centralized data warehouse that is the single source of truth for an organization. The data warehouse is designed to support enterprise-wide reporting and analysis by integrating data from multiple sources and transforming it into a consistent, standardized format. In the Inmon approach, the data warehouse is built first and then smaller data marts are created for specific business units or departments.
+
+The Kimball approach, also known as the bottom-up approach, is a more iterative approach that focuses on building data marts for specific business units or departments first, and then integrating them into a larger data warehouse over time. The data marts are designed to meet the specific reporting and analysis needs of each business unit or department and are built using a dimensional model that is optimized for querying and reporting.
+
+The main difference between the two approaches is the order in which the data warehouse and data marts are built. The Inmon approach builds a centralized data warehouse first, which requires a significant investment in time and resources before it can deliver value to the organization. The Kimball approach, on the other hand, delivers value more quickly by building data marts first and integrating them into a larger data warehouse over time.
+
+Another difference between the two approaches is the modeling technique used. The Inmon approach uses a normalized data model, which is optimized for data consistency and integrity, while the Kimball approach uses a dimensional data model, which is optimized for querying and reporting.
+
+Ultimately, the choice between the two approaches depends on the specific needs and goals of the organization. The Inmon approach may be more suitable for organizations that require a centralized view of data across the entire enterprise, while the Kimball approach may be more suitable for organizations that need to deliver value quickly to specific business units or departments.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Junk Dimension and what is the difference between Junk Dimension and Degenerated Dimension?
-Junk dimension: Grouping of Random flags and text attributes in a dimension and moving them to a separate sub dimension. Degenerate Dimension: Keeping the control information on Fact table ex: Consider a Dimension table with fields like order number and order line number and have 1:1 relationship with Fact table, In this case this dimension is removed and the order information will be directly store.
+ junk dimension is a small table that is created to store low cardinality and unrelated attributes that do not fit well in the fact or dimension tables. These attributes may not be meaningful on their own, but when combined, they can provide useful information for analysis. Junk dimensions are typically used to simplify the fact table by removing the need for multiple columns for these low cardinality attributes.
+
+On the other hand, a degenerate dimension is a dimension that is derived from a fact table and has no independent existence of its own. It is essentially a single column that represents a unique identifier for a transaction, such as an invoice number or a sales order number. Degenerate dimensions are used to track the status or history of a transaction and are often used as a reference in fact tables.
+
+The main difference between a junk dimension and a degenerate dimension is that a junk dimension contains unrelated attributes that do not fit well in the fact or dimension tables, while a degenerate dimension represents a single column in a fact table that serves as a unique identifier for a transaction. Additionally, junk dimensions are typically created as separate tables, while degenerate dimensions are derived from fact tables.
+
+In summary, a junk dimension is a small table that stores low cardinality and unrelated attributes, while a degenerate dimension is a single column that serves as a unique identifier for a transaction and is derived from a fact table.
+Sure, here are examples for both a junk dimension and a degenerate dimension:
+
+Example of a Junk Dimension:
+
+Suppose you have a fact table that tracks sales transactions and you want to include information about the payment method used for each transaction. You could create a separate table called PaymentMethod that includes the following columns:
+
+PaymentMethodKey (surrogate key)
+PaymentMethodType (e.g. credit card, debit card, cash, check)
+PaymentMethodIssuer (e.g. Visa, Mastercard, American Express)
+You could then add a column to the fact table called PaymentMethodKey, which references the PaymentMethod table. This allows you to track the payment method used for each transaction without cluttering the fact table with multiple columns for each payment method attribute.
+
+Example of a Degenerate Dimension:
+
+Suppose you have a fact table that tracks sales transactions and you want to include information about the sales order number for each transaction. You could add a column to the fact table called SalesOrderNumber, which serves as a unique identifier for each transaction. This column would not be joined to a separate dimension table, as it represents a single column in the fact table and has no independent existence of its own. The SalesOrderNumber column could be used to track the status or history of each transaction, such as the date it was created or the date it was shipped.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -902,7 +934,15 @@ The fact table consists of the Index keys of the dimension/look up tables and th
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is difference between Er Modeling and Dimensional Modeling?
-Basic difference is E-R modeling will have logical and physical model. Dimensional model will have only physical model. E-R modeling is used for normalizing the OLTP database design.Dimensional modeling is used for de-normalizing the ROLAP/MOLAP design.
+ER modeling (Entity-Relationship modeling) and dimensional modeling are two different approaches to database modeling, each suited to a different type of data storage and analysis.
+
+ER modeling is a modeling technique that focuses on representing real-world entities, relationships, and attributes in a database. ER models are used in operational databases, where the focus is on transaction processing and maintaining data integrity. In ER modeling, the data is normalized to reduce redundancy and to ensure that each piece of information is stored in only one place. ER models are designed to support transaction processing and are optimized for insert, update, and delete operations.
+
+Dimensional modeling, on the other hand, is a modeling technique that focuses on representing data in a way that is optimized for query and analysis. Dimensional models are used in data warehousing and business intelligence applications, where the focus is on analyzing data to gain insights and make decisions. In dimensional modeling, data is organized into dimensions and facts. Dimensions are the attributes that describe the data, such as time, location, and product. Facts are the measures or metrics that are being analyzed, such as sales, revenue, or profit. Dimensional models are designed to support reporting and analysis and are optimized for query performance.
+
+The main difference between ER modeling and dimensional modeling is the focus of the modeling technique. ER modeling is focused on data integrity and transaction processing, while dimensional modeling is focused on query and analysis performance. Additionally, ER models tend to be highly normalized, with the goal of reducing data redundancy and ensuring data consistency, while dimensional models are typically denormalized to improve query performance and make it easier to analyze data.
+
+In summary, ER modeling is a technique for representing real-world entities, relationships, and attributes in a database, while dimensional modeling is a technique for organizing data into dimensions and facts that is optimized for query and analysis performance.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
