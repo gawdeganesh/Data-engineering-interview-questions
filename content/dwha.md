@@ -947,7 +947,20 @@ In summary, ER modeling is a technique for representing real-world entities, rel
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Conformed Fact?
-Conformed dimensions are the dimensions, which can be used across multiple Data Marts in combination with multiple facts tables accordingly.
+In the context of data warehousing, a conformed dimension is a dimension that is designed to be used consistently across multiple fact tables within the same data warehouse. A conformed dimension provides a consistent set of attributes and hierarchies, which can be used to analyze data in different ways across multiple fact tables.
+
+Here are some examples of conformed dimensions:
+
+Time dimension: This dimension contains attributes such as year, quarter, month, day, and hour. It is used in many fact tables, such as sales, inventory, and production. By conforming to the same time dimension, these fact tables can be easily combined and analyzed over time.
+
+Product dimension: This dimension contains attributes such as product name, product category, and product price. It is used in many fact tables, such as sales, inventory, and production. By conforming to the same product dimension, these fact tables can be easily combined and analyzed across different product categories.
+
+Customer dimension: This dimension contains attributes such as customer name, customer address, and customer demographics. It is used in many fact tables, such as sales, customer service, and marketing. By conforming to the same customer dimension, these fact tables can be easily combined and analyzed across different customer segments.
+
+Location dimension: This dimension contains attributes such as city, state, country, and geographic region. It is used in many fact tables, such as sales, inventory, and logistics. By conforming to the same location dimension, these fact tables can be easily combined and analyzed across different geographic regions.
+
+By conforming to the same dimensions, data can be consistently analyzed and compared across different fact tables, which can help to uncover insights and make better business decisions.
+
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -967,7 +980,19 @@ Hierarchies are logical structures that use ordered levels as a means of organiz
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are Data Validation Strategies for Data Mart Validation after loading process?
-Data validation is to make sure that the loaded data is accurate and meets the business requirements. Strategies are different methods followed to meet the validation requirements.
+Data validation is an important step in the data warehousing process that ensures the accuracy, completeness, and consistency of data in a data mart after the loading process. Here are some data validation strategies that can be used for data mart validation:
+
+Record count validation: This strategy involves comparing the number of records in the source system with the number of records loaded into the data mart. If the record count does not match, it could indicate data truncation or duplication during the loading process.
+
+Data type validation: This strategy involves validating that the data types of the source system match the data types of the data mart. For example, if a column in the source system is of the "date" data type, then the corresponding column in the data mart should also be of the "date" data type.
+
+Data value validation: This strategy involves comparing the data values in the source system with the data values in the data mart. This can be done by running queries that compare data values in specific columns or by using data profiling tools that analyze the data patterns and relationships.
+
+Referential integrity validation: This strategy involves ensuring that the referential integrity of the data is maintained after the loading process. For example, if a fact table references a dimension table, then the corresponding dimension records should exist in the dimension table.
+
+Business rule validation: This strategy involves validating that the data in the data mart conforms to the predefined business rules. For example, if a business rule states that the sales amount cannot be negative, then the data mart should not contain any negative sales amounts.
+
+By implementing these data validation strategies, data warehouse teams can ensure that the data in the data mart is accurate, complete, and consistent, which is crucial for making informed business decisions.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -977,10 +1002,32 @@ Three different data types: Dimensions, Measure, and DetailView is nothing but a
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Surrogate Key and where we use it?
-Surrogate key is a substitution for the natural primary key.It is just a unique identifier or number for each row that can be used for the primary key to the table. The only requirement for a surrogate primary key is that it is unique for each row in the table.
-Data warehouses typically use a surrogate, (also known as artificial or identity key), key for the dimension tables primary keys. They can use Info sequence generator, or Oracle sequence, or SQL Server Identity values for the surrogate key.
-It is useful because the natural primary key (i.e. Customer Number in Customer table) can change and this makes updates more difficult.
-Some tables have columns such as AIRPORT_NAME OR CITY_NAME which are stated as the primary keys (according to the business users) but ,not only can these change, indexing on a numerical value is probably better and you could consider creating a surrogate key called, say, AIRPORT_ID. This would be internal to the system and as far as the client is concerned, you may display only the AIRPORT_NAME.
+A surrogate key is a unique identifier that is generated by the system and assigned to each record in a database table. This key is not derived from any of the data in the record, but instead provides a simple and consistent way to identify each record in the table. Surrogate keys are often used as primary keys in data warehousing environments, where data is sourced from multiple systems and integrated into a single repository.
+
+Surrogate keys are necessary in data warehousing for several reasons:
+
+Uniqueness: Surrogate keys provide a unique identifier for each record in a table, which is essential for maintaining data integrity and avoiding duplication.
+
+Simplicity: Surrogate keys are often simpler and easier to manage than natural keys, which can be complex, compound, or subject to change.
+
+Performance: Surrogate keys can be optimized for performance, since they are often shorter and more efficient to use than natural keys.
+
+Flexibility: Surrogate keys provide flexibility in handling updates and deletes, since they do not depend on the original data values and can be easily changed without affecting other related records.
+
+Integration: Surrogate keys can be used to integrate data from multiple source systems into a single repository, since they provide a consistent way to identify records across different systems.
+
+In summary, surrogate keys are necessary in data warehousing to provide a simple, consistent, and reliable way to identify records across multiple source systems. They provide many advantages over natural keys, including simplicity, performance, and flexibility, and are widely used in data warehousing environments to manage data integration and maintain data integrity.
+While natural keys are useful in many situations, they may not always be the best choice for primary keys in a data warehousing environment. Here are some reasons why surrogate keys are often used instead of natural keys in data warehousing:
+
+Complexity of natural keys: Natural keys can be complex, composite, or even hierarchical in nature. They may contain a large number of attributes, making them difficult to use as primary keys in tables with many foreign key relationships. Surrogate keys, on the other hand, are simple and easy to use.
+
+Size of natural keys: Some natural keys can be very large, which can lead to performance issues when used as primary keys. Surrogate keys are typically much smaller and can be optimized for performance.
+
+Data quality issues: Natural keys may not be consistent or reliable across different source systems. This can cause problems when integrating data from multiple sources into a single data warehouse. Surrogate keys, which are generated by the system, provide a consistent and reliable way to identify records across different source systems.
+
+Changes to natural keys: Natural keys may change over time, either due to changes in the source system or changes in business rules. This can lead to problems with referential integrity and make it difficult to track changes over time. Surrogate keys, on the other hand, are stable and do not change over time.
+
+In summary, surrogate keys provide a simple, consistent, and reliable way to identify records in a data warehousing environment. While natural keys can be useful in many situations, they may not always be the best choice for primary keys in a data warehousing context, due to their complexity, size, and reliability issues.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -996,7 +1043,19 @@ Metadata is also presented at the Datamart level, subsets, fact and dimensions, 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are the possible Data Marts in Retail Sales?
-Product information and sales information.
+In a retail sales environment, there are several types of data marts that can be useful for analyzing sales data. Here are some examples:
+
+Product sales data mart: This data mart focuses on product sales, providing information on which products are selling well, which products are not selling, which products are selling together, and how sales are changing over time. This data mart can help retailers optimize their product offerings, identify trends and patterns in sales, and make better decisions about inventory management.
+
+Customer sales data mart: This data mart focuses on customer behavior, providing information on customer demographics, preferences, and purchase history. This data mart can help retailers better understand their customers, target marketing efforts more effectively, and provide personalized recommendations and promotions to customers.
+
+Store sales data mart: This data mart focuses on store-level data, providing information on store performance, foot traffic, and sales by location. This data mart can help retailers optimize store layouts, staffing, and inventory management, and identify trends and patterns in sales across different stores.
+
+Promotions and pricing data mart: This data mart focuses on promotions and pricing data, providing information on the effectiveness of different pricing strategies, the impact of promotions on sales, and how pricing and promotions affect customer behavior. This data mart can help retailers make better decisions about pricing and promotions, optimize their marketing efforts, and maximize revenue.
+
+Supply chain data mart: This data mart focuses on supply chain data, providing information on inventory levels, supplier performance, and shipping and delivery times. This data mart can help retailers optimize their supply chain operations, reduce costs, and improve efficiency.
+
+Overall, these data marts can provide valuable insights into retail sales data, helping retailers make better decisions about product offerings, inventory management, marketing, pricing, and supply chain operations.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -1006,10 +1065,21 @@ Various ETL tools used in market are Informatica Data Stage Oracle Warehouse Bui
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Dimensional Modeling?
-Dimensional Modeling is a design concept used by many data warehouse designers to build their data warehouse. In this design model all the data is stored in two types of tables - Facts table and Dimension table. Fact table contains the facts/measurements of the business and the dimension table contains the context of measurements i.e., the dimensions on which the facts are calculated.Dimension modeling is a method for designing data warehouse. Three types of modeling are there
-1. Conceptual modeling
-2. Logical modeling
-3. Physical modeling.
+Dimensional modeling is a technique used in data warehousing to organize and structure data in a way that makes it easy to understand and analyze. It is a data modeling technique specifically designed for analytical systems and business intelligence (BI) applications.
+
+In dimensional modeling, data is organized into two types of tables: fact tables and dimension tables. Fact tables contain quantitative data that can be measured, such as sales figures or customer transactions, and are typically large and detailed. Dimension tables contain descriptive information about the data in the fact tables, such as time, geography, and product attributes.
+
+Dimensional modeling has several key features:
+
+Star schema: Dimensional models are typically organized as a star schema, where one or more fact tables are connected to several dimension tables. The fact tables are at the center of the schema, with the dimension tables branching out from them like spokes on a wheel.
+
+Denormalized data: Dimensional models are denormalized, meaning that data is duplicated across multiple tables to reduce the need for complex joins and improve query performance.
+
+Hierarchical structures: Dimension tables often have hierarchical structures, such as product categories or geographic regions, that provide a natural way to aggregate and summarize data.
+
+Business-oriented design: Dimensional models are designed to reflect the way that business users think about their data, with a focus on key performance indicators (KPIs) and metrics that are important to the business.
+
+Dimensional modeling is widely used in data warehousing and BI applications because it provides a simple and intuitive way to organize and analyze data. By organizing data into fact and dimension tables, and using a star schema to connect them, dimensional models provide a clear and consistent way to understand complex data relationships and analyze data at different levels of granularity.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -1019,7 +1089,13 @@ The perception of what constitutes a VLDB continues to grow. A one-terabyte data
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Degenerate Dimension Table?
-Degenerate Dimensions: If a table contains the values, which r neither dimension nor measures is called degenerate dimensions. For example invoice id, employee no.A degenerate dimension is data that is dimensional in nature but stored in a fact table.
+In dimensional modeling, a degenerate dimension is a dimension that is derived from a fact table and does not have any independent attributes of its own. It represents a single piece of transactional data that does not belong to any other dimension table, and is often used as a unique identifier or reference number for the fact table.
+
+For example, a sales fact table may include a degenerate dimension for a transaction number or invoice number. This degenerate dimension table would have only one column for the transaction number, and would not have any additional attributes such as product name or customer name. The purpose of this degenerate dimension is to provide a unique identifier for each transaction in the fact table.
+
+Another example of a degenerate dimension is a tracking number for a package shipment in a shipping fact table. The tracking number would be a unique identifier for each package shipment, and would not have any additional attributes.
+
+Degenerate dimensions are often stored in the fact table itself, rather than in a separate dimension table, because they do not have any independent attributes. They are also typically not used in aggregations or calculations, since they represent a single piece of transactional data. However, they are important for linking the fact table to other dimensions, such as time or location, and for providing a way to uniquely identify each record in the fact table.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
