@@ -1097,6 +1097,17 @@ Another example of a degenerate dimension is a tracking number for a package shi
 
 Degenerate dimensions are often stored in the fact table itself, rather than in a separate dimension table, because they do not have any independent attributes. They are also typically not used in aggregations or calculations, since they represent a single piece of transactional data. However, they are important for linking the fact table to other dimensions, such as time or location, and for providing a way to uniquely identify each record in the fact table.
 
+why do we need degenrate dimension to uniquely identify the records when we already have the surrogate keys to do that? 
+
+Surrogate keys (SKs) are typically used to uniquely identify records in dimension tables, rather than in fact tables. This is because dimension tables typically have a smaller number of rows and a larger number of attributes than fact tables, and surrogate keys can help to improve query performance by reducing the amount of data that needs to be joined.
+
+In contrast, fact tables are typically much larger than dimension tables and contain many different measures or metrics that are associated with each record. It's not always practical or efficient to use surrogate keys to identify each individual record in the fact table, since it would require additional joins and potentially large amounts of data to be scanned.
+
+Degenerate dimensions, on the other hand, are used to represent unique identifiers or reference numbers that are associated with each transaction or event captured in the fact table. Since they are derived directly from transactional data, they do not require any additional joins or lookups to be used in queries or calculations. They are also typically used only for identification purposes, rather than being used as attributes in calculations or aggregations.
+
+In summary, surrogate keys are typically used in dimension tables to uniquely identify records and reduce the amount of data that needs to be joined, while degenerate dimensions are used in fact tables to represent unique identifiers or reference numbers that are associated with each transaction or event, without requiring additional joins or lookups.
+
+
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is Er Diagram?
@@ -1105,12 +1116,28 @@ The Entity-Relationship (ER) model was originally proposed in 1976 as a way to u
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is the difference between Snowflake and Star Schema and what are situations where Snowflake Schema is better than Star Schema?
-Star schema contains the dimension tables mapped around one or more fact tables.It is a renormalized model and no need to use complicated joins. Also Queries results fast.Snowflake schema is the normalized form of Star schema. It contains in-depth joins, because the tables are spited in to many pieces. We can easily do modification directly in the tables.We have to use complicated joins, since we have more tables. There will be some delay in processing the Query.
+The main difference between the Snowflake and Star Schema is how they handle the dimension tables. In the Star Schema, each dimension is represented by a single table, while in the Snowflake Schema, each dimension is represented by multiple tables that are normalized.
+
+In the Star Schema, the dimension tables are denormalized and may contain redundant data, which simplifies and speeds up queries. In contrast, the Snowflake Schema uses normalized dimension tables, which reduces redundancy but may result in more complex queries.
+
+The Snowflake Schema is typically used in situations where data is highly normalized and the dimension tables have many attributes or columns. This is because the normalization of the dimension tables in the Snowflake Schema reduces redundancy and makes the database more efficient in terms of storage space.
+
+The Star Schema, on the other hand, is typically used in situations where data is not highly normalized and the dimension tables are relatively simple. This is because the denormalized structure of the Star Schema simplifies queries and improves query performance.
+
+There are situations where the Snowflake Schema may be better than the Star Schema. For example, if the dimension tables have many attributes or columns, the Snowflake Schema may be more efficient in terms of storage space. Additionally, if the data warehouse is expected to grow significantly in the future, the Snowflake Schema may be more scalable and easier to maintain than the Star Schema.
+
+However, the choice between the Snowflake and Star Schema ultimately depends on the specific requirements of the data warehouse and the nature of the data being stored. Factors such as data complexity, query complexity, query performance, scalability, and maintenance requirements should be considered when choosing between these two schema designs.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## Can a Dimension Table contain numeric values?
-Yes. However, those data type will be char (only the values can numeric/char).Yes, dimensions even contain numerical because these are descriptive elements of our business.
+Yes, a dimension table can contain numeric values. In fact, it is common for dimension tables to include both categorical and numeric attributes.
+
+For example, in a retail sales data warehouse, a product dimension table may include attributes such as product name, brand, category, and price. The price attribute would be numeric, and it would allow analysts to perform calculations and aggregations based on the price of products sold.
+
+Similarly, a time dimension table may include attributes such as year, quarter, month, day, and hour. The year, quarter, and month attributes would be categorical, while the day and hour attributes would be numeric.
+
+The inclusion of numeric values in dimension tables is particularly useful when performing calculations and aggregations in the fact table. By joining the fact table with the appropriate dimension table(s), analysts can calculate and aggregate numeric measures such as sales revenue, cost, and profit.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -1240,12 +1267,26 @@ No. OLTP database tables are normalized, and it will add additional time to quer
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## If Denormalized is improves Data Warehouse Processes and why Fact Table is in Normal Form?
-Foreign keys of facts tables are primary keys of Dimension tables. It is clear that fact table contains columns which are primary key to other table that itself make normal form table.
+In a data warehouse, denormalization is often used to improve query performance by reducing the number of joins required to retrieve data. Denormalization involves combining multiple related tables into a single table, which can reduce the complexity of queries and improve performance.
+
+However, it is important to note that denormalization should be used judiciously, as it can also lead to data duplication and potential inconsistencies. In general, denormalization is most effective when used in dimension tables, where it can simplify queries and improve performance without introducing significant data redundancy.
+
+On the other hand, fact tables in a data warehouse are typically designed to be in normal form, which means that they are normalized to eliminate data redundancy and potential inconsistencies. This is because fact tables contain detailed, transaction-level data that can be easily aggregated and analyzed in different ways. Normalizing fact tables helps ensure data accuracy and consistency across different dimensions and measures.
+
+In summary, while denormalization can be useful for improving query performance in a data warehouse, it is generally more appropriate to apply it to dimension tables rather than fact tables. Fact tables should be designed in normal form to ensure data accuracy and consistency.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are Lookup Tables?
-A lookup table is the table placed on the target table based upon the primary key of the target, it just updates the table by allowing only modified (new or updated) records based on lookup condition.
+In data warehousing, a lookup table is a type of table used to match or map data from a source system to a target system. It is used to perform lookups and retrieve additional information that is not available in the source system.
+
+Lookup tables typically have two columns: a key column and a value column. The key column is used to match or join the data in the source system with the data in the lookup table, while the value column contains additional information that is retrieved based on the match.
+
+For example, suppose you have a customer dimension table in your data warehouse, and you want to add a customer location attribute to the table. You can create a lookup table that maps each customer to their location, using the customer ID as the key column and the location as the value column. When you query the customer dimension table and join it with the lookup table on the customer ID column, you can retrieve the location information for each customer.
+
+Lookup tables can also be used to perform data cleansing and standardization. For example, you can create a lookup table that maps different variations of a product name to a standardized name, and use it to clean up product names in the source system.
+
+In summary, lookup tables are used to map data from a source system to a target system, and are commonly used in data warehousing for performing lookups, retrieving additional information, and performing data cleansing and standardization.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
@@ -1270,12 +1311,31 @@ Time dimensions are usually loaded by a program that loops through all possible 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What is a Level of Granularity of a Fact Table?
-Level of granularity means level of detail that you put into the fact table in a data warehouse. Level of granularity would mean what detail are you willing to put for each transactional fact.
+The level of granularity of a fact table refers to the level of detail or specificity at which the data in the fact table is captured. In other words, it is the level at which the facts in the fact table are aggregated and summarized.
+
+The level of granularity is an important consideration in designing a fact table because it determines the level of detail at which data can be analyzed. For example, if a fact table captures sales data at the level of individual transactions, then it can be used to analyze sales data at the transaction level, as well as at higher levels of aggregation such as by product, region, or time period. However, if the fact table only captures sales data at a higher level of aggregation, such as by day or week, then it may not be possible to analyze sales data at the transaction level.
+
+The level of granularity of a fact table is typically determined by the business requirements and the level of detail at which data needs to be analyzed. In some cases, multiple fact tables may be required to capture data at different levels of granularity to support different types of analysis.
+
+In summary, the level of granularity of a fact table is an important consideration in data warehouse design, as it determines the level of detail at which data can be analyzed. It is typically determined by the business requirements and the level of detail at which data needs to be analyzed.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
 ## What are Non additive facts?
-Non-additive facts are facts that cannot be summed up for any of the dimensions present in the fact table. However, they are not considered as useless. If there is changes in dimensions the same facts can be useful.
+Non-additive facts are facts that cannot be meaningfully aggregated across all dimensions in a fact table. In other words, they do not have a well-defined arithmetic sum, average, or other aggregate function that can be applied to them across all dimensions in the fact table.
+
+Examples of non-additive facts include ratios, percentages, and counts of distinct values. For instance, a customer count or product count in a fact table would be considered a non-additive fact, as it cannot be simply summed up across all dimensions in the fact table.
+
+Non-additive facts are important to consider when designing a data warehouse because they require special treatment to ensure accurate and meaningful analysis. One approach is to create separate fact tables for each non-additive fact, or to include additional dimensions in the fact table to capture the context of the non-additive fact. Alternatively, certain aggregation techniques or statistical methods can be used to calculate and analyze non-additive facts.
+
+In summary, non-additive facts are facts that cannot be meaningfully aggregated across all dimensions in a fact table, and they require special treatment in data warehouse design to ensure accurate and meaningful analysis.
+
+Let's say we have a fact table that captures sales data at the transaction level, with dimensions for product, customer, date, and store. One of the facts in this table is the profit margin for each transaction, which is calculated as the difference between the sale price and the cost of goods sold, divided by the sale price.
+
+Profit margin is a non-additive fact, because it cannot be simply summed up across all dimensions in the fact table. For instance, the profit margin for a product in one store on a particular day might be different than the profit margin for the same product in another store on a different day. If we try to calculate an average profit margin across all transactions in the fact table, we would not get a meaningful or accurate result.
+
+To analyze profit margin in this scenario, we might create a separate fact table that captures profit margin at a higher level of aggregation, such as by product, store, and date. Alternatively, we might add additional dimensions to the fact table to capture the context of the profit margin, such as the promotion that was in effect at the time of the sale, or the type of customer who made the purchase. We could also use statistical techniques, such as regression analysis, to calculate and analyze the relationship between profit margin and other variables in the fact table.
+
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
